@@ -1,3 +1,4 @@
+
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import dbConnect from "@/lib/dbConnect";
@@ -10,8 +11,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { username } = await params;
-  const siteUrl = "https://feedy.converzion.in";
-
+  const siteUrl = process.env.APPLICATION_URI
   return {
     title: `Send an anonymous message to @${username}`,
     description: `Send ${username} an anonymous message, anonymous feedback, or anonymous question on Feedy — 100% free and no sign-in required.`,
@@ -36,14 +36,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function UserPage({ params }: PageProps) {
-  const { username } = await params;
+  try {
+    const { username } = await params;
+    await dbConnect();
+    const user = await searchByUserNameService(username);
+    if (!user) {
+      return notFound();
+    }
 
-  await dbConnect();
-  const user = await searchByUserNameService(username);
-
-  if (!user) {
-    notFound();
+    return <UserMessageClient username={username} />;
+  } catch (error) {
+    notFound()
   }
 
-  return <UserMessageClient username={username} />;
 }
