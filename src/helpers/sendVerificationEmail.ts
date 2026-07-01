@@ -1,5 +1,5 @@
 import { resend } from "@/lib/resend";
-import EmailTemplate from "@/email/emailTemplate";
+import  EmailTemplate  from "@/email/emailTemplate";
 import { ApiResponse } from "@/types/global";
 
 export default async function sendVerificationCode(
@@ -7,7 +7,6 @@ export default async function sendVerificationCode(
   username: string,
   verifyCode: number
 ): Promise<ApiResponse> {
-
 
   try {
     await resend.emails.send({

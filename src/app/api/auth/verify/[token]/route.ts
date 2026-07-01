@@ -10,10 +10,10 @@ export async function POST(
   try {
     await dbConnect();
     const { token } = await context.params;
-    const cookiesStore: any = await cookies();
-    const cookie = cookiesStore.get("accessToken");
+    const cookiesStore: any = await  cookies();
+    const cookie =  cookiesStore.get("accessToken");
     const incomingAccessToken = cookie.value
-
+  
     if (!token) {
       throw new Error("Invalid request");
     }
@@ -30,7 +30,6 @@ export async function POST(
     const decodedToken: any = jwt.verify(incomingAccessToken, secret);
 
     const user: any = await getUserById(decodedToken._id);
-
     if (!user) {
       throw new Error("Inavlid request");
     }
@@ -47,7 +46,6 @@ export async function POST(
     }
 
     const accessToken = await user.generateAccessToken();
-    console.log(accessToken)
     user.isVerified = true;
     await user.save({ validateBeforeSave: false });
     const response = NextResponse.json(

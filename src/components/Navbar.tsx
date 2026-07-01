@@ -2,161 +2,186 @@
 import { cn } from "@/lib/className";
 import Link from "next/link";
 import React from "react";
-import { Button } from "@/components/Button";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { PiCoffeeDuotone } from "react-icons/pi";
+import { IoClose } from "react-icons/io5";
 import { FaUserAlt } from "react-icons/fa";
 import { useUser } from "@/hooks/useUser";
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
+import { ThemeToggle } from "@/components/ThemeToggle";
+
 export const Navbar = () => {
-  const [scroll, setScroll] = React.useState(false);
-  const [activeBurger, setactiveBurger] = React.useState(false);
-  const queryClient = useQueryClient()
-  const router = useRouter()
+  // const [scrolled, setScrolled] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const { data: user } = useUser();
-  function handleBurger() {
-    if (!activeBurger) {
-      setactiveBurger(true);
-    } else {
-      setactiveBurger(false);
-    }
-  }
+
   async function handleLogOut() {
     try {
       const res = await axios.post("/api/sign-out");
-      if (!res.data.success) {
-        toast.error(res.data.message);
-        return;
-      }
-      queryClient.clear()
+      if (!res.data.success) { toast.error(res.data.message); return; }
+      queryClient.clear();
       queryClient.invalidateQueries({ queryKey: ["me"] });
-
       toast.success("Logout successfully", { position: "top-center" });
-      router.refresh()
-    } catch (error) {
-
+      router.refresh();
+    } catch {
       toast.warning("Something Went Wrong", { position: "top-center" });
     }
   }
+
+  // React.useEffect(() => {
+  //   const onScroll = () => setScrolled(window.scrollY > 10);
+  //   window.addEventListener("scroll", onScroll);
+  //   return () => window.removeEventListener("scroll", onScroll);
+  // }, []);
+
+  // Close menu on resize to desktop
   React.useEffect(() => {
-    function scrollControl() {
-      if (window.scrollY > 10) {
-        setScroll(true);
-      } else {
-        setScroll(false);
-      }
-    }
-    window.addEventListener("scroll", scrollControl);
-    return () => {
-      window.removeEventListener("scroll", scrollControl);
-    };
+    const onResize = () => { if (window.innerWidth >= 768) setMenuOpen(false); };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
-  const Links: { name: string; href: string }[] = [
-    {
-      name: "Home",
-      href: "/",
-    },
-    {
-      name: "About",
-      href: "#",
-    },
+
+  const navLinks = [
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
   ];
+
   return (
     <>
+      {/* ── Navbar shell ── */}
       <div
         className={cn(
-          "w-full bg-neutral-50 flex items-center z-20 ",
-          scroll ? "relative" : "fixed top-0 left-0 right-0",
+          "sticky top-0 z-50 w-full transition-all duration-300",
+          "bg-background  dark:bg-foreground border-b border-background/25   dark:border-border shadow-sm backdrop-blur"
         )}
       >
-        <div
-          className={cn(
-            " mx-2 md:mx-auto flex justify-between items-center py-2 ",
-            "transition-transform duration-200 ease-out",
-            scroll
-              ? " max-w-7xl scale-95 fixed top-0 left-0 right-0 px-2 mt-4  border border-neutral-400 bg-white dark:bg-white"
-              : " w-full max-w-7xl",
-          )}
-        >
-          <Link href={"/"} className={cn("flex items-center gap-2")}>
-            <h2
-              className={cn(
-                "text-lg font-bold text-shadow-lg flex items-center gap-2 text-black",
-              )}
-            >
-              <PiCoffeeDuotone />
-              FEEDY
-            </h2>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14 w-full">
+
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <img src="/feedy-favicons/favicon.svg" alt="Feedy Logo" className="w-10 h-10 object-contain" />
+
           </Link>
-          <button
-            className={cn("flex md:hidden items-center text-2xl")}
-            onClick={handleBurger}
-          >
-            <GiHamburgerMenu />
-          </button>
-          <div
-            className={cn(
-              activeBurger
-                ? " items-start absolute top-0 left-0 right-0 bg-neutral-100 rounded-2xl mt-15 mx-2 py-2 border border-neutral-400"
-                : "hidden md:flex  gap-8 text-sm",
-            )}
-          >
-            {Links.map((link: { name: string; href: string }, idx: number) => {
-              return (
-                <div
-                  key={idx}
-                  className={cn(
-                    " font-bold flex items-center justify-center  text-neutral-100 dark:text-neutral-700 hover:text-neutral-50 dark:hover:text-neutral-950 text-lg",
-                  )}
+
+          {/* Desktop nav */}
+          <div className={cn("flex justify-center items-center gap-3")}>
+            <nav className="hidden md:flex items-center gap-6">
+              {navLinks.map((l) => (
+                <Link
+                  key={l.name}
+                  href={l.href}
+                  className="text-xs font-mono font-bold text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-background uppercase tracking-wider transition-colors"
                 >
-                  <Link href={link.href}>{link.name}</Link>
-                </div>
-              );
-            })}
-            {user ? (
-              <div
-                className={cn(
-                  " font-bold flex items-center justify-center  text-neutral-100 dark:text-neutral-700 hover:text-neutral-50 dark:hover:text-neutral-950 text-lg",
-                )}
-              >
+                  {l.name}
+                </Link>
+              ))}
+              {user ? (
                 <button
-                  className={cn("cursor-pointer")}
-                  onClick={handleLogOut}>Log out</button>
-              </div>
-            ) : (
-              <div
-                className={cn(
-                  " font-bold flex items-center justify-center  text-neutral-100 dark:text-neutral-700 hover:text-neutral-50 dark:hover:text-neutral-950 text-lg",
-                )}
-              >
-                <Link href={"/signIn"}>Log in</Link>
-              </div>
-            )}
-            {user ? (
-              <>
-                <Button
-                  href={"/dashboard"}
-                  classname={
-                    "bg-black shadow-lg flex items-center justify-center gap-2 text-neutral-700 dark:text-neutral-100 hover:text-neutral-950 dark:hover:text-neutral-50 font-bold "
-                  }
+                  onClick={handleLogOut}
+                  className="text-xs font-mono font-bold text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-background uppercase tracking-wider transition-colors cursor-pointer"
                 >
-                  <FaUserAlt />
-                  <h2 className={cn(" text-white font-normal")}>Dashboard</h2>
-                </Button>
-              </>
-            ) : (
-              <Button
-                href={"/"}
-                classname={activeBurger ? "hidden" : "bg-black shadow-lg"}
-              >
-                <h2 className={cn(" text-white font-normal")}>Get Started</h2>
-              </Button>
-            )}
+                  Log out
+                </button>
+              ) : (
+                <Link
+                  href="/signIn"
+                  className="text-xs font-mono font-bold text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-background uppercase tracking-wider transition-colors cursor-pointer "
+                >
+                  Log in
+                </Link>
+              )}
+              {user ? (
+                <Link
+                  href="/dashboard"
+                  className="flex items-center gap-2 bg-foreground text-background font-mono font-bold text-xs uppercase tracking-widest px-4 py-2 hover:bg-foreground/90 dark:bg-background dark:text-foreground dark:hover:bg-background/90 active:scale-95 transition-all"
+                >
+                  <FaUserAlt className="text-[10px]" />
+                  Dashboard
+                </Link>
+              ) : (
+                <Link
+                  href="/signup"
+                  className="bg-foreground text-background font-mono font-bold text-xs uppercase tracking-widest px-4 py-2  hover:bg-foreground/90 dark:bg-background dark:text-foreground dark:hover:bg-background/90 active:scale-95 transition-all"
+                >
+                  Get Started
+                </Link>
+              )}
+
+            </nav>
+
+            {/* Mobile burger */}
+            <button
+              className="flex md:hidden items-center justify-center w-9 h-9 text-foreground dark:text-background"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <IoClose size={22} /> : <GiHamburgerMenu size={20} />}
+            </button>
+            <ThemeToggle />
           </div>
         </div>
+
+        {/* Mobile dropdown */}
+        {menuOpen && (
+          <div className="md:hidden bg-foreground text-background border-t border-background/20 dark:bg-background dark:text-foreground dark:border-border px-4 pb-4 flex flex-col gap-1">
+            {navLinks.map((l) => (
+              <Link
+                key={l.name}
+                href={l.href}
+                onClick={() => setMenuOpen(false)}
+                className="block py-3 text-sm font-mono font-bold text-background/80 hover:text-background border-b border-background/10 dark:text-muted-foreground dark:hover:text-foreground dark:border-border/40 uppercase tracking-wider transition-colors"
+              >
+                {l.name}
+              </Link>
+            ))}
+            {user ? (
+              <button
+                onClick={() => { handleLogOut(); setMenuOpen(false); }}
+                className="text-left py-3 text-sm font-mono font-bold text-background/80 hover:text-background border-b border-background/10 dark:text-muted-foreground dark:hover:text-foreground dark:border-border/40 uppercase tracking-wider transition-colors cursor-pointer"
+              >
+                Log out
+              </button>
+            ) : (
+              <Link
+                href="/signIn"
+                onClick={() => setMenuOpen(false)}
+                className="text-left py-3 text-sm font-mono font-bold text-background/80 hover:text-background border-b border-background/10 dark:text-muted-foreground dark:hover:text-foreground dark:border-border/40 uppercase tracking-wider transition-colors cursor-pointer"
+              >
+                Log in
+              </Link>
+            )}
+
+            <div className="pt-4 ">
+              {user ? (
+                <Link
+                  href="/dashboard"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full font-mono font-bold text-xs
+                   uppercase tracking-widest px-4 py-3 bg-black text-background hover:bg-foreground/90  dark:bg-black dark:text-white dark:hover:bg-background/90 transition-all border border-neutral-700"
+                >
+                  <FaUserAlt className="text-[10px]" />
+                  Dashboard
+                </Link>
+              ) : (
+                <Link
+                  href="/signup"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-center w-full bg-background text-foreground font-mono font-bold text-xs uppercase tracking-widest px-4 py-3 hover:bg-background/90 dark:bg-foreground dark:text-background dark:hover:bg-foreground/90 transition-all"
+                >
+                  Get Started
+                </Link>
+              )}
+
+            </div>
+
+          </div>
+
+        )}
+
       </div>
       <Toaster />
     </>

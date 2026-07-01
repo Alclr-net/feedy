@@ -1,17 +1,18 @@
-"use client"
-import LaserFlow from '@/components/LaserFlow';
-import { useRef, useState, useEffect } from 'react';
-import { cn } from '@/lib/className';
-import { PiCoffeeDuotone } from "react-icons/pi";
-import { toast } from 'sonner';
+"use client";
+
+import LaserFlow from "@/components/LaserFlow";
+import { useRef, useState, useEffect } from "react";
+import { cn } from "@/lib/className";
+import { toast } from "sonner";
+import { useTheme } from "next-themes";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from './ui/button';
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 export default function LaserFlowBox() {
   const revealImgRef = useRef<HTMLImageElement | null>(null);
@@ -19,6 +20,12 @@ export default function LaserFlowBox() {
   const [messageInput, setMessageInput] = useState<string>("");
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const moods = ["Happy", "Neutral", "Sad", "Frustrated", "Angry"];
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const suggestions = [
     "Really happy with the results! You nailed it!",
@@ -27,30 +34,26 @@ export default function LaserFlowBox() {
     "Hope things get better soon. Hang in there.",
   ];
 
-  // Update reveal image position on mouse move relative to wrapper
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
     const el = revealImgRef.current;
     if (el) {
-      el.style.setProperty('--mx', `${x}px`);
-      el.style.setProperty('--my', `${y}px`);
+      el.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      el.style.setProperty("--my", `${e.clientY - rect.top}px`);
     }
   };
 
   const handleMouseLeave = () => {
     const el = revealImgRef.current;
     if (el) {
-      el.style.setProperty('--mx', '-9999px');
-      el.style.setProperty('--my', '-9999px');
+      el.style.setProperty("--mx", "-9999px");
+      el.style.setProperty("--my", "-9999px");
     }
   };
 
   const handleSelection = (message: string, idx: number) => {
     setMessageInput(message);
     setSelectedIdx(idx);
-
   };
 
   const handleSendMessage = () => {
@@ -63,160 +66,158 @@ export default function LaserFlowBox() {
     setSelectedIdx(null);
   };
 
+  // Determine current theme for LaserFlow color
+  const isDark = mounted
+    ? theme === "dark" ||
+    (theme === "system" &&
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+    : true;
+
+  const laserColor = isDark ? "#ffffff" : "#000000";
+
   return (
     <div
       ref={wrapperRef}
-      style={{ backgroundColor: 'black' }}
-      className="relative w-full min-h-[1200px]"
+      className="relative w-full overflow-hidden min-h-[450px] lg:min-h-[900px] flex items-center bg-background"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Hero Text Section */}
-      <div className="absolute top-25 left-10 z-0">
-        <div className="relative flex flex-col items-center justify-center text-center mt-30">
-          {/* Tagline */}
-          <p className="text-xs bg-neutral-200/10 py-1 px-2 text-neutral-400 mb-3 outline-neutral-50/40 outline-double">
+      {/* LaserFlow Background */}
+      <div className="absolute inset-0 z-0 w-full h-full hidden lg:block">
+        <LaserFlow horizontalBeamOffset={0.3} verticalBeamOffset={0.2} color={laserColor} />
+      </div>
+
+      {/* Main Grid Container */}
+      <div className="relative z-10 w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-24 flex flex-col lg:flex-row items-center justify-between gap-12">
+
+        {/* Left Column (Hero Text) */}
+        <div className="w-full flex flex-col items-center text-center">
+          <p className="inline-block text-[10px] bg-muted/60 py-1 px-3 text-muted-foreground mb-4 outline-border outline-double tracking-widest uppercase font-mono">
             Trusted by millions of people
           </p>
 
-          {/* H1 */}
-          <h1 className="text-5xl uppercase font-bold text-white leading-tight">
-            We'll keep your name
-            <br />
-            a secret
+          <h1
+            className="uppercase font-bold text-foreground leading-tight tracking-tight font-mono"
+            style={{ fontSize: "clamp(1.8rem, 6vw, 3.5rem)" }}
+          >
+            We'll keep your
+            <br />name a secret
           </h1>
 
-          {/* Subheading */}
-          <p className="text-neutral-400 mt-4 max-w-xl text-md">
-            Everyone has something to say but not always the courage to say it out loud. We make it easy for people to be honest, open, and completely anonymous.
+          <p className="text-muted-foreground mt-4 text-xs sm:text-sm leading-relaxed max-w-md font-mono">
+            Everyone has something to say. We make it easy to be honest, open, and completely anonymous.
           </p>
 
-          {/* CTAs */}
-          <div className="flex gap-4 mt-6">
-            <button className="bg-white text-black font-normal px-4 py-2 hover:bg-neutral-200 transition">
-              Send Messages
-            </button>
-            <button className="border border-neutral-600 text-white font-normal px-4 py-2 hover:bg-neutral-800 transition">
-              Pricing
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* LaserFlow Background — fills the entire hero */}
-      <div className="absolute inset-0 z-0 w-full h-full ">
-        <LaserFlow
-          horizontalBeamOffset={0.1}
-          verticalBeamOffset={0.0}
-          color="#ffffff"
-        />
-      </div>
-
-      {/* Mock Browser Window */}
-      <div
-        className={cn(
-          "absolute top-[48%] left-1/2 -translate-x-1/2 w-[86%] max-w-4xl h-[48%] md:h-[52%]",
-          "bg-black border border-neutral-800 flex flex-col overflow-hidden shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)]",
-          "z-10 transition-all duration-500 border-neutral-500 hover:shadow-[0_20px_50px_rgba(255,255,255,0.08)]",
-          "group/browser z-0 "
-        )}
-      >
-        {/* Browser Window Header */}
-        <div className="flex items-center justify-between px-4 py-3 bg-[#0a0a0a] border-b border-neutral-900 select-none shrink-0">
-          {/* Traffic light dots */}
-          <div className="flex gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
-            <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
-            <span className="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
-          </div>
-          {/* URL Bar */}
-          <div className="bg-[#121212] border border-neutral-800 rounded-md px-3 py-1 text-[10px] text-neutral-500 flex items-center gap-1.5 max-w-xs w-full justify-center">
-            <span className="text-[10px] text-neutral-600">
-              <PiCoffeeDuotone />
-            </span>
-            <span className="tracking-wide text-neutral-500">feedy.app/u/alex_secret</span>
-          </div>
-          <div className="w-12"></div>
-        </div>
-
-        {/* Browser Window Body */}
-        <div className="flex-1 overflow-y-auto bg-black p-4 md:p-6 flex flex-col items-center gap-5 scrollbar-thin">
-          <h2 className="text-xs md:text-sm font-bold text-center text-white font-mono tracking-widest uppercase relative after:content-[''] after:block after:w-12 after:h-0.5 after:bg-neutral-600 after:mx-auto after:mt-2 select-none">
-            We help you stay Anonymous.
-          </h2>
-
-          {/* Message Form */}
-          <div className="w-full max-w-2xl flex flex-col gap-3">
-            <div className="flex flex-col gap-1.5">
-              <label htmlFor="mock-message" className="text-[10px] uppercase tracking-wider text-neutral-400 font-semibold font-mono select-none">
-                Message
-              </label>
-              <textarea
-                id="mock-message"
-                placeholder="Type your message here."
-                value={messageInput}
-                onChange={(e) => setMessageInput(e.target.value)}
-                className="flex min-h-[72px] w-full rounded-none border border-neutral-700 bg-transparent px-3 py-2 text-xs text-white transition-colors outline-none placeholder:text-neutral-600 focus:border-neutral-500 font-mono resize-none"
-              />
-            </div>
-            <button
-              onClick={handleSendMessage}
-              className="bg-white hover:bg-neutral-200 text-black px-4 py-2 text-[10px] font-bold tracking-widest uppercase transition cursor-pointer self-start rounded-none active:scale-95 w-full"
+          <div className="flex flex-col sm:flex-row gap-3 mt-6 w-full sm:w-auto">
+            <Link
+              href="/signup"
+              className="bg-foreground text-background font-mono font-bold text-xs uppercase tracking-widest px-6 py-2.5 hover:bg-foreground/90 active:scale-95 transition-all w-full sm:w-auto text-center"
             >
-              Send message
-            </button>
+              Send Messages
+            </Link>
+            <Link
+              href="/#features"
+              className="border border-border text-muted-foreground font-mono font-bold text-xs uppercase tracking-widest px-6 py-2.5 hover:border-foreground hover:text-foreground active:scale-95 transition-all w-full sm:w-auto text-center"
+            >
+              See Features
+            </Link>
           </div>
-          <div className={cn("flex w-full max-w-2xl")}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">Choose your mood</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {moods.map((mood, idx) => (
-                  <DropdownMenuItem key={idx}>
-                    {mood}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          {/* AI Suggestions List — no dropdown, always visible */}
-          <div className="w-full max-w-2xl flex flex-col gap-1 border border-neutral-400">
+        </div>
 
-            <div className="flex flex-col border border-neutral-900 bg-[#060606]">
-              {suggestions.map((s, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "border-b border-neutral-900 last:border-b-0 px-3 py-2 w-full flex justify-between items-center gap-4",
-                    "transition-colors duration-150",
-                    selectedIdx === index ? "bg-neutral-900/60" : "hover:bg-neutral-900/30"
-                  )}
-                >
-                  <p className="text-[10px] text-neutral-400 truncate flex-1 font-mono">{s}</p>
-                  <button
-                    onClick={() => handleSelection(s, index)}
+        {/* Right Column (Mock Browser Window) */}
+        <div className="w-full">
+          <div className="w-full border border-border flex flex-col overflow-hidden shadow-2xl transition-shadow duration-500 bg-background">
+
+            {/* Browser chrome */}
+            <div className="flex items-center justify-between px-3 py-2 bg-muted/40 border-b border-border select-none shrink-0">
+              <div className="flex gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-red-500/80" />
+                <span className="w-2 h-2 rounded-full bg-yellow-500/80" />
+                <span className="w-2 h-2 rounded-full bg-green-500/80" />
+              </div>
+              <div className="bg-muted border border-border px-2 py-0.5 text-[10px] text-muted-foreground flex items-center gap-1 max-w-[180px] sm:max-w-xs w-full justify-center font-mono">
+                <img src="/feedy-favicons/favicon.svg" alt="Feedy" className="w-3 h-3 rounded-sm object-contain shrink-0" />
+                <span className="truncate">feedy.app/u/alex_secret</span>
+              </div>
+              <div className="w-8" />
+            </div>
+
+            {/* Browser body */}
+            <div className="p-3 sm:p-5 flex flex-col gap-3 sm:gap-4 bg-background">
+              <h2 className="text-[10px] font-bold text-center text-foreground font-mono tracking-widest uppercase after:content-[''] after:block after:w-8 after:h-px after:bg-border after:mx-auto after:mt-2 select-none">
+                We help you stay Anonymous.
+              </h2>
+
+              {/* Textarea */}
+              <div className="flex flex-col gap-1">
+                <label htmlFor="mock-message" className="text-[9px] uppercase tracking-wider text-muted-foreground font-mono select-none font-bold">
+                  Message
+                </label>
+                <textarea
+                  id="mock-message"
+                  placeholder="Type your message here."
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                  rows={3}
+                  className="w-full border border-border bg-transparent px-3 py-2 text-xs text-foreground outline-none placeholder:text-muted-foreground/40 focus:border-foreground/40 font-mono resize-none transition-colors"
+                />
+              </div>
+
+              <button
+                onClick={handleSendMessage}
+                className="bg-foreground hover:bg-foreground/90 text-background text-[10px] font-bold tracking-widest uppercase font-mono py-2 active:scale-95 transition-all cursor-pointer w-full"
+              >
+                Send message
+              </button>
+
+              {/* Mood + suggestions — hidden on xs, shown sm+ */}
+              <div className="hidden sm:flex w-full">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="text-[10px] h-7 font-mono">Choose your mood</Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {moods.map((mood, idx) => (
+                      <DropdownMenuItem key={idx} className="text-xs font-mono">{mood}</DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+
+              {/* Suggestions — hidden on mobile */}
+              <div className="hidden sm:flex flex-col border border-border bg-card">
+                {suggestions.map((s, index) => (
+                  <div
+                    key={index}
                     className={cn(
-                      "border text-[9px] font-mono px-2 py-1 transition-all duration-150 cursor-pointer shrink-0 active:scale-95",
-                      selectedIdx === index
-                        ? "bg-neutral-200 border-neutral-400 text-neutral-900"
-                        : "bg-neutral-100 border-neutral-300 text-neutral-800"
+                      "border-b border-border/40 last:border-b-0 px-3 py-2 flex justify-between items-center gap-3 transition-colors duration-150",
+                      selectedIdx === index ? "bg-muted" : "hover:bg-muted/50"
                     )}
                   >
-                    {selectedIdx === index ? "✓ Selected" : "Select"}
-                  </button>
-                </div>
-              ))}
+                    <p className="text-[10px] text-muted-foreground truncate flex-1 font-mono">{s}</p>
+                    <button
+                      onClick={() => handleSelection(s, index)}
+                      className={cn(
+                        "border text-[9px] font-mono px-2 py-0.5 transition-all cursor-pointer shrink-0 active:scale-95",
+                        selectedIdx === index
+                          ? "bg-black dark:bg-white text-white dark:text-black border-border"
+                          : "bg-neutral-950 border-neutral-800 text-neutral-100 dark:bg-neutral-50 dark:hover:bg-neutral-300 dark:border-neutral-800 dark:text-neutral-700"
+                      )}
+                    >
+                      {selectedIdx === index ? "✓ Selected" : "Select"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA banner */}
+              <div className="border border-border px-4 py-3 text-center bg-muted/20 select-none">
+                <p className="text-[10px] text-muted-foreground leading-relaxed font-mono">
+                  Be completely anonymous with Feedy — create your account today.
+                </p>
+              </div>
             </div>
-          </div>
-
-          {/* Empty Banner CTA */}
-          <div className="w-full max-w-2xl border border-neutral-800 p-4 flex flex-col items-center text-center bg-[#030303] select-none">
-
-            <p className="text-[10px] text-neutral-500 max-w-sm mt-1 leading-relaxed font-mono">
-              Be completely anonymous with Feedy. Create your account and start receiving anonymous messages today.
-            </p>
-
           </div>
         </div>
       </div>
@@ -227,20 +228,20 @@ export default function LaserFlowBox() {
         src="/bg_hero.jpeg"
         alt="Reveal effect"
         style={{
-          position: 'absolute',
-          width: '180%',
-          top: '-50%',
+          position: "absolute",
+          width: "180%",
+          top: "-50%",
           left: 0,
           zIndex: 5,
-          mixBlendMode: 'lighten',
+          mixBlendMode: "lighten",
           opacity: 0.3,
-          pointerEvents: 'none',
-          ['--mx' as any]: '-9999px',
-          ['--my' as any]: '-9999px',
-          WebkitMaskImage: 'radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.95) 60px, rgba(255,255,255,0.6) 120px, rgba(255,255,255,0.25) 180px, rgba(255,255,255,0) 240px)',
-          maskImage: 'radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.95) 60px, rgba(255,255,255,0.6) 120px, rgba(255,255,255,0.25) 180px, rgba(255,255,255,0) 240px)',
-          WebkitMaskRepeat: 'no-repeat',
-          maskRepeat: 'no-repeat'
+          pointerEvents: "none",
+          ["--mx" as any]: "-9999px",
+          ["--my" as any]: "-9999px",
+          WebkitMaskImage: "radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.95) 60px, rgba(255,255,255,0.6) 120px, rgba(255,255,255,0.25) 180px, rgba(255,255,255,0) 240px)",
+          maskImage: "radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.95) 60px, rgba(255,255,255,0.6) 120px, rgba(255,255,255,0.25) 180px, rgba(255,255,255,0) 240px)",
+          WebkitMaskRepeat: "no-repeat",
+          maskRepeat: "no-repeat",
         }}
       />
     </div>

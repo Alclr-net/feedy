@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/className";
-import { PiCoffeeDuotone } from "react-icons/pi";
 import {
   MdLockOutline,
   MdOutlineMessage,
@@ -58,7 +57,9 @@ function useCounter(target: number, duration: number, active: boolean) {
       if (progress < 1) rafRef.current = requestAnimationFrame(step);
     };
     rafRef.current = requestAnimationFrame(step);
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, [active, target, duration]);
 
   return count;
@@ -119,10 +120,10 @@ const steps = [
 ];
 
 const stats = [
-  { value: 2000000, display: "2M+",    label: "Messages sent",            numeric: true  },
-  { value: 120000,  display: "120K+",  label: "Active users",             numeric: true  },
-  { value: 999,     display: "99.9%",  label: "Uptime",                   numeric: false },
-  { value: 0,       display: "0",      label: "Sender identities stored", numeric: true  },
+  { value: 2000000, display: "2M+", label: "Messages sent", numeric: true },
+  { value: 120000, display: "120K+", label: "Active users", numeric: true },
+  { value: 999, display: "99.9%", label: "Uptime", numeric: false },
+  { value: 0, display: "0", label: "Sender identities stored", numeric: true },
 ];
 
 const testimonials = [
@@ -205,14 +206,14 @@ function SectionHeading({
 }) {
   return (
     <FadeUp className="flex flex-col items-center text-center gap-3 mb-14">
-      <span className="text-[10px] uppercase tracking-[0.25em] text-neutral-500 font-mono border border-neutral-800 px-3 py-1">
+      <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground font-mono border border-border px-3 py-1 bg-card">
         {eyebrow}
       </span>
-      <h2 className="text-3xl md:text-4xl font-bold uppercase text-white leading-tight font-mono">
+      <h2 className="text-3xl md:text-4xl font-bold uppercase text-foreground leading-tight font-mono">
         {title}
       </h2>
       {sub && (
-        <p className="text-neutral-500 text-sm max-w-lg leading-relaxed font-mono">
+        <p className="text-muted-foreground text-sm max-w-lg leading-relaxed font-mono">
           {sub}
         </p>
       )}
@@ -240,17 +241,17 @@ function StatCard({ stat, delay }: { stat: typeof stats[number]; delay: number }
   return (
     <div
       ref={ref}
-      className="bg-black px-8 py-10 flex flex-col items-center text-center"
+      className="bg-background px-8 py-10 flex flex-col items-center text-center"
       style={{
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0)" : "translateY(20px)",
         transition: `opacity 0.5s ease ${delay}ms, transform 0.5s ease ${delay}ms`,
       }}
     >
-      <span className="text-4xl font-bold text-white font-mono tracking-tight tabular-nums">
+      <span className="text-4xl font-bold text-foreground font-mono tracking-tight tabular-nums">
         {display}
       </span>
-      <span className="text-[10px] uppercase tracking-widest text-neutral-600 font-mono mt-2">
+      <span className="text-[10px] uppercase tracking-widest text-muted-foreground font-mono mt-2">
         {stat.label}
       </span>
     </div>
@@ -264,8 +265,8 @@ function StatCard({ stat, delay }: { stat: typeof stats[number]; delay: number }
 /* ── Stats ────────────────────────────────────────────────── */
 export function StatsSection() {
   return (
-    <section className="bg-black border-t border-neutral-900 py-20 px-4">
-      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-px bg-neutral-900">
+    <section className="bg-background border-t border-border py-20 px-4">
+      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-px bg-border">
         {stats.map((s, i) => (
           <StatCard key={i} stat={s} delay={i * 80} />
         ))}
@@ -277,23 +278,27 @@ export function StatsSection() {
 /* ── Features ─────────────────────────────────────────────── */
 export function FeaturesSection() {
   return (
-    <section id="features" className="bg-black border-t border-neutral-900 py-24 px-4">
+    <section id="features" className="bg-background border-t border-border py-24 px-4">
       <div className="max-w-6xl mx-auto">
         <SectionHeading
           eyebrow="What you get"
           title="Everything you need, nothing you don't."
           sub="Feedy is purpose-built for honest, anonymous communication. No noise, no compromise."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-neutral-900">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border">
           {features.map((f, i) => (
-            <FadeUp key={i} delay={i * 60} className="group bg-black p-8 flex flex-col gap-4 cursor-default hover:bg-neutral-950 transition-colors duration-300">
-              <div className="w-9 h-9 border border-neutral-800 flex items-center justify-center text-neutral-400 group-hover:border-neutral-500 group-hover:text-white transition-all duration-300 group-hover:scale-110">
+            <FadeUp
+              key={i}
+              delay={i * 60}
+              className="group bg-background p-8 flex flex-col gap-4 cursor-default hover:bg-muted/30 transition-colors duration-300"
+            >
+              <div className="w-9 h-9 border border-border flex items-center justify-center text-muted-foreground group-hover:border-foreground group-hover:text-foreground transition-all duration-300 group-hover:scale-110">
                 {f.icon}
               </div>
-              <h3 className="text-sm font-bold uppercase tracking-widest text-white font-mono group-hover:tracking-[0.2em] transition-all duration-300">
+              <h3 className="text-sm font-bold uppercase tracking-widest text-foreground font-mono group-hover:tracking-[0.2em] transition-all duration-300">
                 {f.title}
               </h3>
-              <p className="text-[11px] text-neutral-500 leading-relaxed font-mono group-hover:text-neutral-400 transition-colors duration-300">
+              <p className="text-[11px] text-muted-foreground leading-relaxed font-mono group-hover:text-muted-foreground/80 transition-colors duration-300">
                 {f.desc}
               </p>
             </FadeUp>
@@ -307,12 +312,9 @@ export function FeaturesSection() {
 /* ── How It Works ─────────────────────────────────────────── */
 export function HowItWorksSection() {
   return (
-    <section className="bg-[#030303] border-t border-neutral-900 py-24 px-4">
+    <section className="bg-background border-t border-border py-24 px-4">
       <div className="max-w-6xl mx-auto">
-        <SectionHeading
-          eyebrow="3 simple steps"
-          title="Up and running in under a minute."
-        />
+        <SectionHeading eyebrow="3 simple steps" title="Up and running in under a minute." />
         <div className="relative grid grid-cols-1 md:grid-cols-3 gap-0">
           {/* Animated connector line */}
           <AnimatedLine />
@@ -322,15 +324,15 @@ export function HowItWorksSection() {
               delay={i * 150}
               className="relative flex flex-col items-center text-center px-8 py-6 z-10 group"
             >
-              <div className="w-16 h-16 border border-neutral-700 bg-[#030303] flex items-center justify-center mb-6 group-hover:border-neutral-400 transition-colors duration-300 group-hover:scale-105 transition-transform">
-                <span className="text-2xl font-bold text-white font-mono tracking-tighter">
+              <div className="w-16 h-16 border border-border bg-card flex items-center justify-center mb-6 group-hover:border-foreground transition-colors duration-300 group-hover:scale-105 transition-transform">
+                <span className="text-2xl font-bold text-foreground font-mono tracking-tighter">
                   {s.step}
                 </span>
               </div>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-white font-mono mb-3">
+              <h3 className="text-xs font-bold uppercase tracking-widest text-foreground font-mono mb-3">
                 {s.title}
               </h3>
-              <p className="text-[11px] text-neutral-500 leading-relaxed font-mono max-w-xs">
+              <p className="text-[11px] text-muted-foreground leading-relaxed font-mono max-w-xs">
                 {s.desc}
               </p>
             </FadeUp>
@@ -347,14 +349,14 @@ function AnimatedLine() {
   return (
     <div
       ref={ref}
-      className="hidden md:block absolute top-8 left-[16.67%] right-[16.67%] h-px bg-neutral-900 z-0 overflow-hidden"
+      className="hidden md:block absolute top-8 left-[16.67%] right-[16.67%] h-px bg-border z-0 overflow-hidden"
     >
       <div
         style={{
           width: inView ? "100%" : "0%",
           transition: "width 1.2s ease 0.3s",
           height: "1px",
-          background: "linear-gradient(90deg, transparent, #404040, transparent)",
+          background: "linear-gradient(90deg, transparent, var(--border), transparent)",
         }}
       />
     </div>
@@ -364,25 +366,27 @@ function AnimatedLine() {
 /* ── Testimonials ─────────────────────────────────────────── */
 export function TestimonialsSection() {
   return (
-    <section className="bg-[#030303] border-t border-neutral-900 py-24 px-4">
+    <section className="bg-background border-t border-border py-24 px-4">
       <div className="max-w-6xl mx-auto">
         <SectionHeading
           eyebrow="Real people, real honesty"
           title="What users are saying."
           sub="Thousands of people are already sharing and receiving honest feedback with Feedy."
         />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-neutral-900">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
           {testimonials.map((t, i) => (
             <FadeUp
               key={i}
               delay={i * 80}
-              className="bg-black p-6 flex flex-col gap-4 group hover:bg-neutral-950 transition-colors duration-300 cursor-default"
+              className="bg-background p-6 flex flex-col gap-4 group hover:bg-muted/30 transition-colors duration-300 cursor-default"
             >
-              <span className="text-3xl text-neutral-700 font-serif leading-none select-none group-hover:text-neutral-500 transition-colors duration-300">"</span>
-              <p className="text-[11px] text-neutral-400 leading-relaxed font-mono flex-1 group-hover:text-neutral-300 transition-colors duration-300">
+              <span className="text-3xl text-muted-foreground/60 font-serif leading-none select-none group-hover:text-muted-foreground transition-colors duration-300">
+                "
+              </span>
+              <p className="text-[11px] text-muted-foreground leading-relaxed font-mono flex-1 group-hover:text-foreground transition-colors duration-300">
                 {t.text}
               </p>
-              <span className="text-[10px] text-neutral-600 font-mono border-t border-neutral-900 pt-3">
+              <span className="text-[10px] text-muted-foreground/60 font-mono border-t border-border pt-3">
                 {t.handle}
               </span>
             </FadeUp>
@@ -396,7 +400,7 @@ export function TestimonialsSection() {
 /* ── About Section ────────────────────────────────────────── */
 export function AboutSection() {
   return (
-    <section id="about" className="bg-black border-t border-neutral-900 py-24 px-4">
+    <section id="about" className="bg-background border-t border-border py-24 px-4">
       <div className="max-w-6xl mx-auto">
         <SectionHeading
           eyebrow="Our story"
@@ -405,18 +409,18 @@ export function AboutSection() {
         />
 
         {/* Story + visual split */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-neutral-900 mb-px">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border mb-px">
           {/* Left: origin story */}
-          <FadeUp className="bg-black p-10 flex flex-col gap-5">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-600 font-mono">
+          <FadeUp className="bg-background p-10 flex flex-col gap-5">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-mono">
               Origin
             </span>
-            <p className="text-sm text-neutral-400 leading-loose font-mono">
+            <p className="text-sm text-muted-foreground leading-loose font-mono">
               Most feedback never gets said. In meetings, in friendships, in teams — people filter
               themselves. Feedy was built to remove that friction. A link you share. A message
               anyone can send. No identity attached, ever.
             </p>
-            <p className="text-sm text-neutral-400 leading-loose font-mono">
+            <p className="text-sm text-muted-foreground leading-loose font-mono">
               We launched quietly in 2024. Within weeks it became clear people had a lot to say —
               when given a safe space to say it. Today Feedy carries over 2 million anonymous
               messages and we're just getting started.
@@ -424,34 +428,58 @@ export function AboutSection() {
           </FadeUp>
 
           {/* Right: ASCII-style decorative terminal */}
-          <FadeUp delay={120} className="bg-[#050505] p-10 font-mono text-[11px] text-neutral-600 leading-loose select-none">
-            <div className="text-neutral-500 mb-2 text-[10px] uppercase tracking-widest">feedy — terminal</div>
-            <div className="border-b border-neutral-900 mb-4" />
-            <div><span className="text-green-600">$</span> feedy init</div>
-            <div className="text-neutral-700">  creating your anonymous inbox…</div>
-            <div><span className="text-green-600">✓</span> link ready: feedy.app/u/<span className="text-white">you</span></div>
-            <div className="mt-3"><span className="text-green-600">$</span> feedy messages --unread</div>
-            <div className="text-neutral-700">  3 new anonymous messages</div>
-            <div>  <span className="text-neutral-400">[1]</span> "Your talk last week genuinely…"</div>
-            <div>  <span className="text-neutral-400">[2]</span> "Honest feedback: the design…"</div>
-            <div>  <span className="text-neutral-400">[3]</span> "I never told you this but…"</div>
-            <div className="mt-3"><span className="text-green-600">$</span> <span className="animate-pulse text-neutral-500">_</span></div>
+          <FadeUp
+            delay={120}
+            className="bg-card p-10 font-mono text-[11px] text-muted-foreground leading-loose select-none border border-border/50"
+          >
+            <div className="text-muted-foreground/80 mb-2 text-[10px] uppercase tracking-widest">
+              feedy — terminal
+            </div>
+            <div className="border-b border-border mb-4" />
+            <div>
+              <span className="text-green-600 font-bold">$</span> feedy init
+            </div>
+            <div className="text-muted-foreground/60"> creating your anonymous inbox…</div>
+            <div>
+              <span className="text-green-600 font-bold">✓</span> link ready: feedy.app/u/
+              <span className="text-foreground font-bold">you</span>
+            </div>
+            <div className="mt-3">
+              <span className="text-green-600 font-bold">$</span> feedy messages --unread
+            </div>
+            <div className="text-muted-foreground/60"> 3 new anonymous messages</div>
+            <div>
+              {" "}
+              <span className="text-muted-foreground/50">[1]</span> "Your talk last week genuinely…"
+            </div>
+            <div>
+              {" "}
+              <span className="text-muted-foreground/50">[2]</span> "Honest feedback: the design…"
+            </div>
+            <div>
+              {" "}
+              <span className="text-muted-foreground/50">[3]</span> "I never told you this but…"
+            </div>
+            <div className="mt-3">
+              <span className="text-green-600 font-bold">$</span>{" "}
+              <span className="animate-pulse text-muted-foreground">_</span>
+            </div>
           </FadeUp>
         </div>
 
         {/* Values grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-neutral-900">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
           {values.map((v, i) => (
             <FadeUp
               key={i}
               delay={i * 70}
-              className="bg-black p-8 flex flex-col gap-3 group hover:bg-neutral-950 transition-colors duration-300 cursor-default"
+              className="bg-background p-8 flex flex-col gap-3 group hover:bg-muted/30 transition-colors duration-300 cursor-default"
             >
-              <div className="w-px h-6 bg-neutral-700 group-hover:bg-neutral-400 transition-colors duration-300" />
-              <h3 className="text-xs font-bold uppercase tracking-widest text-white font-mono">
+              <div className="w-px h-6 bg-border group-hover:bg-muted-foreground transition-colors duration-300" />
+              <h3 className="text-xs font-bold uppercase tracking-widest text-foreground font-mono">
                 {v.label}
               </h3>
-              <p className="text-[11px] text-neutral-500 leading-relaxed font-mono group-hover:text-neutral-400 transition-colors duration-300">
+              <p className="text-[11px] text-muted-foreground leading-relaxed font-mono group-hover:text-muted-foreground/80 transition-colors duration-300">
                 {v.desc}
               </p>
             </FadeUp>
@@ -467,12 +495,12 @@ export function CTASection() {
   const { ref, inView } = useInView(0.2);
 
   return (
-    <section className="bg-black border-t border-neutral-900 py-24 px-4 overflow-hidden">
+    <section className="bg-background border-t border-border py-24 px-4 overflow-hidden relative">
       {/* Subtle radial glow */}
       <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] pointer-events-none"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[300px] pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(255,255,255,0.025) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse at center, var(--muted) 0%, transparent 70%)",
         }}
       />
       <div
@@ -485,29 +513,29 @@ export function CTASection() {
         }}
       >
         <div
-          className="p-3 border border-neutral-800 bg-[#0a0a0a]"
+          className="p-3 border border-border bg-card"
           style={{
             transform: inView ? "rotate(0deg) scale(1)" : "rotate(-10deg) scale(0.8)",
             transition: "transform 0.6s ease 0.2s",
           }}
         >
-          <PiCoffeeDuotone size={28} className="text-white" />
+          <img src="/feedy-favicons/favicon.svg" alt="Feedy Logo" className="w-7 h-7 rounded-md object-contain" />
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold uppercase text-white leading-tight font-mono">
+        <h2 className="text-3xl md:text-4xl font-bold uppercase text-foreground leading-tight font-mono">
           Ready to hear the truth?
         </h2>
-        <p className="text-neutral-500 text-sm font-mono max-w-md leading-relaxed">
+        <p className="text-muted-foreground text-sm font-mono max-w-md leading-relaxed">
           Create your free Feedy account today and start receiving honest, anonymous messages from anyone.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 mt-2">
-          <button className="bg-white text-black font-bold text-xs uppercase tracking-widest px-8 py-3 hover:bg-neutral-200 transition-all duration-200 active:scale-95 hover:tracking-[0.2em]">
+          <button
+            className="bg-foreground text-background font-bold text-xs uppercase tracking-widest px-8 py-3 hover:bg-foreground/90 transition-all duration-200 active:scale-95 hover:tracking-[0.2em] cursor-pointer"
+            onClick={() => (window.location.href = "/signup")}
+          >
             Get started — it's free
           </button>
-          <button className="border border-neutral-700 text-neutral-400 font-bold text-xs uppercase tracking-widest px-8 py-3 hover:border-neutral-400 hover:text-white transition-all duration-200 active:scale-95">
-            See Pricing
-          </button>
         </div>
-        <p className="text-[10px] text-neutral-700 font-mono">
+        <p className="text-[10px] text-muted-foreground/60 font-mono">
           No credit card required · Free forever plan available
         </p>
       </div>

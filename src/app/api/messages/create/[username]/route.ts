@@ -16,22 +16,28 @@ export async function POST(  req: NextRequest,
                 { status: 404 }
             )
         }
+        const user = await findUserByUsernameAndEmailService({ identifier: username });
+        if (!user) {
+            return NextResponse.json(
+                { success: false, message: "User not found." },
+                { status: 404 }
+            );
+        }
+        if (!user.isAcceptingMessages) {
+            return NextResponse.json(
+                { success: true, message: `${username} is not accepting messages.` },
+                { status: 200 }
+            );
+        }
         const createdMessage = await createMessageService({
             content: data.content,
             createdAt: new Date()
-        })
+        });
         if (!createdMessage) {
             return NextResponse.json(
                 { success: false, message: "Message creation failed." },
-                { status: 404 }
-            )
-        }
-        const user = await findUserByUsernameAndEmailService({identifier:username})
-        if(!user?.isAcceptingMessages){
-            return NextResponse.json(
-                { success: true, message: `${username}, is not accepting messages.`,},
-                { status: 200 }
-            )
+                { status: 500 }
+            );
         }
         const updateUser = await updateUserMessageService({
             username,
@@ -41,12 +47,12 @@ export async function POST(  req: NextRequest,
             return NextResponse.json(
                 { success: false, message: "User not updated" },
                 { status: 404 }
-            )
+            );
         }
         return NextResponse.json(
-            { success: true, message: "Message creation successfully.", data: createdMessage },
+            { success: true, message: "Message sent successfully.", data: createdMessage },
             { status: 200 }
-        )
+        );
 
     } catch (error) {
         return NextResponse.json(

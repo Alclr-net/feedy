@@ -79,7 +79,6 @@ export async function POST(req: NextRequest) {
       path: "/",
       maxAge: 7 * 24 * 60 * 60,
     });
-    console.log(user)
     return response;
   } catch (error) {
     return NextResponse.json(

@@ -11,7 +11,6 @@ export async function GET(req: NextRequest, {params}: {
     try {
         await dbConnect();
         const  username  = await params;
-        console.log(username)
         const parsedData = UsernameValidationSchema.safeParse(username)
         if (!parsedData.success) {
             const error = parsedData.error.issues[0].message

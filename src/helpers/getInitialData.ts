@@ -5,7 +5,7 @@
 //     try {
 //         const cookieStore = await cookies()
 //         const accessToken = cookieStore.get("accessToken")?.value;
-//         .log("getInitialData - accessToken:", accessToken);
+//         console.log("getInitialData - accessToken:", accessToken);
 //         if (!accessToken) return null;
 //         const secret = process.env.ACCESS_TOKEN_SECRET as string
 //         const decodedToken: any = jwt.verify(accessToken, secret);

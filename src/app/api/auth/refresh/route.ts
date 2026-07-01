@@ -35,8 +35,6 @@ export async function POST(req: NextRequest) {
         }
       );
     }
-    console.log("user",user )
-    console.log("dono token",incomingRefreshToken,user.refreshToken)
     if (incomingRefreshToken !== user.refreshToken) {
       throw new Error("Unauthorized request");
     }
@@ -57,7 +55,6 @@ const {refreshToken,accessToken}  = await generateAccessAndRefreshToken(user);
       path: "/",
       maxAge: 7 * 24 * 60 * 60,
     });
-    console.log("hogya hai yeh toh")
     return Response.json(
       {
         success: true,

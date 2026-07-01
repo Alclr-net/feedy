@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
       console.log("mood",mood.mood)
         const messages = [
             {
-                role: "system", content: "You are an AI that generates anonymous message suggestions. Generate exactly 5 unique anonymous messages. Each message must contain 10 words or fewer. Each message must express the user-provided mood. Do not repeat ideas or wording. Make every message natural and human. Avoid offensive hateful sexual explicit or illegal content. Every message must be a complete statement. Do not use commas inside any message. Do not use emojis hashtags numbering bullet points quotation marks explanations newlines or markdown. Output only one line with the three messages separated by a single comma and nothing else."
+                role: "system", content: "You are an AI that generates anonymous message suggestions. Generate exactly 5 unique anonymous messages. Each message must contain 10 words or fewer. Each message must express the user-provided mood. Do not repeat ideas or wording. Make every message natural and human. Avoid offensive hateful sexual explicit or illegal content. Every message must be a complete statement. Do not use commas inside any message. Do not use emojis hashtags numbering bullet points quotation marks explanations newlines or markdown. Output only one line with the three messages separated by a single comma and nothing else ."
             }
             , { role: "user", content: `create message for the user with ${mood.mood} ` },
 

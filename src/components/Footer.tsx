@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
-import { PiCoffeeDuotone } from "react-icons/pi";
 import { FaGithub, FaDiscord, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { toast } from "sonner";
@@ -28,27 +27,24 @@ export const Footer = () => {
     {
       title: "Product",
       links: [
-        { label: "Features", href: "#features" },
-        { label: "Pricing", href: "#pricing" },
-        { label: "Security", href: "#security" },
-        { label: "Roadmap", href: "#roadmap" },
+        { label: "Features", href: "/#features" },
+        { label: "How It Works", href: "/#how-it-works" },
+        { label: "Security", href: "/privacy-policy" },
+        { label: "Get Started", href: "/signup" },
       ],
     },
     {
       title: "Company",
       links: [
-        { label: "About Us", href: "#about" },
-        { label: "Blog", href: "#blog" },
-        { label: "Careers", href: "#careers" },
-        { label: "Contact", href: "#contact" },
+        { label: "About Us", href: "/about" },
+        { label: "Contact", href: "/contact" },
       ],
     },
     {
       title: "Legal",
       links: [
-        { label: "Privacy Policy", href: "#privacy" },
-        { label: "Terms of Service", href: "#terms" },
-        { label: "Acceptable Use", href: "#use-policy" },
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Terms of Service", href: "/terms" },
       ],
     },
   ];
@@ -65,16 +61,16 @@ export const Footer = () => {
           <div className="space-y-4">
             <Link href="/" className="inline-flex items-center gap-2 text-white group">
               <span className="text-2xl text-white transition-transform duration-300 group-hover:rotate-12">
-                <PiCoffeeDuotone />
+                <img src="/feedy-favicons/favicon.svg" alt="Feedy Logo" className="w-6 h-6 rounded-md object-contain inline-block" />
               </span>
-              <span className="text-xl font-bold tracking-wider text-white">FEEDY</span>
+
             </Link>
             <p className="text-sm text-neutral-500 max-w-sm leading-relaxed">
-              Everyone has something to say, but not always the courage to say it out loud. 
+              Everyone has something to say, but not always the courage to say it out loud.
               We make it easy to be honest, open, and completely anonymous.
             </p>
           </div>
-          
+
           {/* Social Icons */}
           <div className="flex gap-4">
             <a
@@ -117,7 +113,7 @@ export const Footer = () => {
         </div>
 
         {/* Dynamic Navigation Links */}
-        <div className="col-span-1 md:col-span-5 grid grid-cols-3 gap-4">
+        <div className="col-span-1 md:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-4">
           {footerLinks.map((section, idx) => (
             <div key={idx} className="space-y-4">
               <h3 className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">
@@ -162,7 +158,7 @@ export const Footer = () => {
               type="submit"
               disabled={loading}
               className={cn(
-                "w-full bg-white text-black font-semibold text-sm py-2 rounded-lg hover:bg-neutral-200 transition duration-200 cursor-pointer disabled:opacity-50",
+                "w-full bg-white text-black font-semibold text-sm py-2  hover:bg-neutral-200 transition duration-200 cursor-pointer disabled:opacity-50",
                 loading && "cursor-not-allowed"
               )}
             >
@@ -176,7 +172,7 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-neutral-900 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-600">
         <p>© {new Date().getFullYear()} Feedy Inc. All rights reserved.</p>
         <p className="flex items-center gap-1">
-          Made with <span className="text-red-500">♥</span> for anonymity.
+          Made by converzion.pvt.ltd
         </p>
       </div>
     </footer>
