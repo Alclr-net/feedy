@@ -171,8 +171,8 @@ export default function LaserFlowBox() {
                 Send message
               </button>
 
-              {/* Mood + suggestions — hidden on xs, shown sm+ */}
-              <div className="hidden sm:flex w-full">
+              {/* Mood + suggestions */}
+              <div className="flex w-full">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="text-[10px] h-7 font-mono">Choose your mood</Button>
@@ -185,8 +185,8 @@ export default function LaserFlowBox() {
                 </DropdownMenu>
               </div>
 
-              {/* Suggestions — hidden on mobile */}
-              <div className="hidden sm:flex flex-col border border-border bg-card">
+              {/* Suggestions */}
+              <div className="flex flex-col border border-border bg-card">
                 {suggestions.map((s, index) => (
                   <div
                     key={index}
