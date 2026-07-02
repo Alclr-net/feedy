@@ -4,8 +4,8 @@ import {
   searchByEmailService,
   createUserService
 } from "@/services/auth.service";
-import sendVerificationEmail from "@/helpers/sendVerificationEmail";
 import { AuthValidationSchema } from "@/validators/register.validator";
+import sendVerificationCode from "@/helpers/sendVerificationEmail";
 export async function POST(request: Request) {
   try {
     await dbConnect();
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
           isUserEmailExist.verifyCode = verifyCode;
           isUserEmailExist.codeExpiry = expiresIn;
           await isUserEmailExist.save();
-          await sendVerificationEmail(email, username!, verifyCode);
+          await sendVerificationCode(email, username!, verifyCode);
           return Response.json({
             success: true,
             message: "Verification code resent to your email.",
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
         }
       }
       const user = await createUserService(username!, email, password, verifyCode, expiresIn)
-      await sendVerificationEmail(email, username!, verifyCode);
+      await sendVerificationCode(email, username!, verifyCode);
       return Response.json({
         success: true,
         message: "User registered successfully. Verification email sent.",

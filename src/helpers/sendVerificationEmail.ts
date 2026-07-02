@@ -10,7 +10,7 @@ export default async function sendVerificationCode(
 
   try {
     await resend.emails.send({
-      from: "feddy@sethrachit.in",
+      from: "feedy@sethrachit.in",
       to: email,
       subject: "Verify your email address",
       react: EmailTemplate({
