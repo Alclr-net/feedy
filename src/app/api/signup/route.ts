@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     }
     const { username, email, password, avatar } = parsedData.data;
     const IsUserNameExist = await searchByUserNameService(username!);
-    
+
     if (IsUserNameExist) {
       return Response.json({
         success: false,
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       }, { status: 400 })
     } else {
       const isUserEmailExist = await searchByEmailService(email);
-      
+
       const verifyCode: number = Math.floor(100000 + Math.random() * 900000);
       const now = new Date()
       const expiresIn: Date = new Date(now.getTime() + 60 * 60 * 1000)

@@ -7,6 +7,7 @@ import {
   createUserForOauthService,
 } from "@/services/auth.service";
 import { generateAccessAndRefreshToken } from "@/helpers/generateAccessAndRefreshToken";
+import sendVerificationCode from "@/helpers/sendVerificationEmail";
 
 export async function GET(req: NextRequest) {
   try {
@@ -16,7 +17,7 @@ export async function GET(req: NextRequest) {
     const state = searchParams.get("state");
     const storedCode = req.cookies.get("code")?.value;
     const storedState = req.cookies.get("state")?.value;
-    
+
     if (
       !code ||
       !state ||
@@ -34,7 +35,7 @@ export async function GET(req: NextRequest) {
     }
     const token = await google.validateAuthorizationCode(code, storedCode);
     if (!token) {
-     return NextResponse.json(
+      return NextResponse.json(
         {
           success: false,
           message: "Invalid Token",
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest) {
       );
     }
     const userInfo: any = arctic.decodeIdToken(token.idToken());
- 
+
     if (!userInfo) {
       return NextResponse.json(
         {
@@ -79,16 +80,20 @@ export async function GET(req: NextRequest) {
     }
     const username = name.toLowerCase();
     const verifyCode: number = Math.floor(100000 + Math.random() * 900000);
+    const now = new Date();
+    const newExpiry: Date = new Date(now.getTime() + 60 * 60 * 1000);
     const user = await createUserForOauthService({
       username,
       email,
+      codeExpiry: newExpiry,
       verifyCode,
       provider: "google",
     });
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user);
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
-   const response = NextResponse.redirect(req.nextUrl.origin)
+    await sendVerificationCode(email, username, verifyCode);
+    const response = NextResponse.redirect(req.nextUrl.origin)
     response.cookies.set({
       name: "accessToken",
       value: accessToken,
@@ -104,7 +109,7 @@ export async function GET(req: NextRequest) {
       maxAge: 7 * 24 * 60 * 60,
     });
     return response;
-  } catch(error) {
+  } catch (error) {
     return NextResponse.json(
       {
         success: false,

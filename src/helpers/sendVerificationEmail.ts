@@ -1,5 +1,5 @@
 import { resend } from "@/lib/resend";
-import  EmailTemplate  from "@/email/emailTemplate";
+import EmailTemplate from "@/email/emailTemplate";
 import { ApiResponse } from "@/types/global";
 
 export default async function sendVerificationCode(
@@ -10,7 +10,7 @@ export default async function sendVerificationCode(
 
   try {
     await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
+      from: "feddy@sethrachit.in",
       to: email,
       subject: "Verify your email address",
       react: EmailTemplate({

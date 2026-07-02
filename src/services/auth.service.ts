@@ -50,7 +50,7 @@ export const findUserByUsernameAndEmailService = async ({
   identifier,
 }: {
   identifier: string;
-})=> {
+}) => {
   try {
     const data = await UserModel.findOne({
       $or: [{ email: identifier }, { username: identifier }],
@@ -61,7 +61,7 @@ export const findUserByUsernameAndEmailService = async ({
   }
 };
 export const getUserById = async (id: string) => {
- 
+
   try {
     const data = await UserModel.findById(id).select(
       "_id email username isVerified verifyCode refreshToken isAcceptingMessages"
@@ -76,21 +76,24 @@ export const createUserForOauthService = async ({
   email,
   verifyCode,
   provider,
+  codeExpiry
 }: {
   username: string;
   email: string;
   verifyCode: number;
   provider: string;
+  codeExpiry: Date
 }) => {
   try {
     const data = await UserModel.create({
       username,
       email,
       verifyCode,
+      codeExpiry,
       provider
     });
     return data;
-  } catch(error) {
+  } catch (error) {
     throw new Error("Retry Again");
   }
 };

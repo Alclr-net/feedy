@@ -6,10 +6,11 @@ import {
   searchByEmailService,
 } from "@/services/auth.service";
 import { generateAccessAndRefreshToken } from "@/helpers/generateAccessAndRefreshToken";
+import sendVerificationCode from "@/helpers/sendVerificationEmail";
 export async function GET(req: NextRequest) {
   try {
     await dbConnect();
- 
+
     const searchParams = req.nextUrl.searchParams;
     const state = searchParams.get("state");
     const code = searchParams.get("code");
@@ -76,17 +77,22 @@ export async function GET(req: NextRequest) {
       return response
     }
     const username = profile.login.toLowerCase();
+    const email = filteredEmails.email;
     const verifyCode: number = Math.floor(100000 + Math.random() * 900000);
+    const now = new Date();
+    const newExpiry: Date = new Date(now.getTime() + 60 * 60 * 1000);
     const user = await createUserForOauthService({
       username,
-      email: filteredEmails.email,
+      email,
       verifyCode,
+      codeExpiry: newExpiry,
       provider: "github",
     });
     const { accessToken, refreshToken } =
       await generateAccessAndRefreshToken(user);
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
+    await sendVerificationCode(email, username, verifyCode);
     const response = NextResponse.redirect(req.nextUrl.origin)
     response.cookies.set({
       name: "accessToken",

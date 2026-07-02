@@ -4,13 +4,14 @@ import { UsernameValidationSchema } from "@/validators/username.validator"
 import { searchByUserNameService } from "@/services/auth.service";
 
 
-export async function GET(req: NextRequest, {params}: {
+export async function GET(req: NextRequest, { params }: {
 
     params: Promise<{ username: string }>;
 }) {
     try {
         await dbConnect();
-        const  username  = await params;
+        const { username } = await params;
+        console.log(username)
         const parsedData = UsernameValidationSchema.safeParse(username)
         if (!parsedData.success) {
             const error = parsedData.error.issues[0].message
@@ -22,7 +23,8 @@ export async function GET(req: NextRequest, {params}: {
                 },
                 { status: 400 },)
         }
-        const isUserExist = await searchByUserNameService(username.username!);
+        const isUserExist = await searchByUserNameService(username);
+        console.log("existed username", isUserExist)
         if (!isUserExist) {
             return NextResponse.json(
                 { success: false, message: "Username not exist." },
