@@ -4,12 +4,12 @@ export const metadata: Metadata = {
   title: "Terms & Conditions | Feedy — Anonymous Messaging Platform",
   description:
     "Read Feedy's Terms and Conditions. Understand the rules governing use of our free anonymous messaging, anonymous feedback, and anonymous question platform.",
-  alternates: { canonical: "https://feedy.converzion.in/terms" },
+  alternates: { canonical: "https://feedy.sethrachit.in/terms" },
   openGraph: {
     title: "Terms & Conditions | Feedy",
     description:
       "The rules governing your use of Feedy's anonymous messaging platform. Read before creating an account.",
-    url: "https://feedy.converzion.in/terms",
+    url: "https://feedy.sethrachit.in/terms",
     type: "website",
   },
 };

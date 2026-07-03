@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/dashboard", "/api/", "/auth/"],
       },
     ],
-    sitemap: "https://feedy.converzion.in/sitemap.xml",
-    host: "https://feedy.converzion.in",
+    sitemap: "https://feedy.sethrachit.in/sitemap.xml",
+    host: "https://feedy.sethrachit.in",
   };
 }

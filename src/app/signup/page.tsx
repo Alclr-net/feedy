@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description:
     "Create your free Feedy account in seconds. Get your personal anonymous link and start receiving anonymous messages, feedback, and questions — no credit card required.",
   alternates: {
-    canonical: "https://feedy.converzion.in/signup",
+    canonical: "https://feedy.sethrachit.in/signup",
   },
   openGraph: {
     title: "Sign Up for Feedy — Free Anonymous Messaging",
     description:
       "Join Feedy for free. Create your anonymous link and receive anonymous messages, feedback, and questions from anyone.",
-    url: "https://feedy.converzion.in/signup",
+    url: "https://feedy.sethrachit.in/signup",
     type: "website",
   },
   twitter: {

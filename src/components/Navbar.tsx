@@ -63,7 +63,7 @@ export const Navbar = () => {
 
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <img src="/feedy-favicons/favicon.svg" alt="Feedy Logo" className="w-10 h-10 object-contain" />
+            <img src="/feedy-favicons/favicon-192x192.png" alt="Feedy Logo" className="w-10 h-10 object-contain" />
 
           </Link>
 

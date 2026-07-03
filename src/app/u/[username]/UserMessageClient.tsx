@@ -21,7 +21,6 @@ import {
 import { useAisuggestion } from "@/hooks/useAiSuggestion";
 import { MdOutlineArrowOutward } from "react-icons/md";
 import Link from "next/link";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast, Toaster } from "sonner";
 import axios from "axios";
 
@@ -33,12 +32,10 @@ export function UserMessageClient({ username }: UserMessageClientProps) {
   const [mood, setMood] = React.useState<string>("friendly");
   const [message, setMessage] = React.useState<string>("");
   const moods = ["Happy", "Neutral", "Sad", "Frustrated", "Angry"];
-  const queryClient = useQueryClient();
   const { data: suggestions, isLoading } = useAisuggestion(mood);
 
   function handleMood(mood: string) {
     setMood(mood);
-    queryClient.invalidateQueries({ queryKey: ["suggestion"] });
   }
 
   function handleSeletion(message: string) {

@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import { getUserById } from "@/services/auth.service";
 import { generateAccessAndRefreshToken } from "@/helpers/generateAccessAndRefreshToken";
-import { success } from "zod";
+
 export async function GET(req: NextRequest) {
     try {
         await dbConnect();
@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
             { success: true, message: "Authenticated", user: user },
             { status: 200 },
         );
-       
+
         response.cookies.set({
             name: "accessToken",
             value: generatedToken.accessToken,

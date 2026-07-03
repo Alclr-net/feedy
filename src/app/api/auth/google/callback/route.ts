@@ -79,20 +79,15 @@ export async function GET(req: NextRequest) {
       return response;
     }
     const username = name.toLowerCase();
-    const verifyCode: number = Math.floor(100000 + Math.random() * 900000);
-    const now = new Date();
-    const newExpiry: Date = new Date(now.getTime() + 60 * 60 * 1000);
     const user = await createUserForOauthService({
       username,
       email,
-      codeExpiry: newExpiry,
-      verifyCode,
+      isVerified: true,
       provider: "google",
     });
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user);
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
-    await sendVerificationCode(email, username, verifyCode);
     const response = NextResponse.redirect(req.nextUrl.origin)
     response.cookies.set({
       name: "accessToken",

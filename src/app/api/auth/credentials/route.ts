@@ -8,8 +8,8 @@ export async function POST(req: NextRequest) {
   try {
     await dbConnect();
     const data = await req.json();
-
     const parsedData = SignInValidationSchema.safeParse(data);
+    console.log("validator", parsedData)
     if (!parsedData.success) {
       const error = parsedData.error.issues[0].message;
       return Response.json(
@@ -56,9 +56,9 @@ export async function POST(req: NextRequest) {
       {
         success: true,
         message: `Welcome back, ${user.username}!`,
-        data:{
-          username:user.username,
-          isVerified:user.isVerified
+        data: {
+          username: user.username,
+          isVerified: user.isVerified
         }
       },
       {
@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        message: "Retry Again!",      
+        message: "Retry Again!",
       },
       {
         status: 500,

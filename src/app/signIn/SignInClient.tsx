@@ -41,6 +41,10 @@ function SignIn() {
       emailRef.current!.value = "";
       passwordRef.current!.value = "";
       queryClient.invalidateQueries({ queryKey: ["me"] });
+      if (!response.data.data.isVerified) {
+        router.push("/verify")
+        return;
+      }
       router.push("/");
       router.refresh();
     } catch (error: any) {

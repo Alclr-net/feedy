@@ -14,7 +14,7 @@ export default async function sendVerificationCode(
       to: email,
       subject: "Verify your email address",
       react: EmailTemplate({
-        email,
+
         username,
         verifyCode,
       }),

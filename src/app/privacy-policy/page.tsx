@@ -4,12 +4,12 @@ export const metadata: Metadata = {
   title: "Privacy Policy | Feedy — Anonymous Messaging Platform",
   description:
     "Read Feedy's Privacy Policy. Learn how we protect your data, ensure complete sender anonymity, and operate with zero tracking on our anonymous messaging platform.",
-  alternates: { canonical: "https://feedy.converzion.in/privacy-policy" },
+  alternates: { canonical: "https://feedy.sethrachit.in/privacy-policy" },
   openGraph: {
     title: "Privacy Policy | Feedy",
     description:
       "Feedy's privacy-first architecture ensures zero IP logging, zero tracking, and complete sender anonymity. Read our full Privacy Policy.",
-    url: "https://feedy.converzion.in/privacy-policy",
+    url: "https://feedy.sethrachit.in/privacy-policy",
     type: "website",
   },
 };

@@ -22,11 +22,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
             )
         }
         const date = Date.now();
-
-        if (date > Number(user.codeExpiry)) {
+        if (date < Number(user.codeExpiry)) {
+            await sendVerificationCode(user.email, user.username, user.verifyCode);
             return NextResponse.json(
-                { success: false, message: "Code expired." },
-                { status: 400 }
+                { success: true, message: "You already have unexpired token." },
+                { status: 200 }
             )
         }
         const newCode: number = Math.floor(100000 + Math.random() * 900000);

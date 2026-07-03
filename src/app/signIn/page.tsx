@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description:
     "Sign in to your Feedy account to read your anonymous messages, manage your inbox, and control who can send you messages.",
   alternates: {
-    canonical: "https://feedy.converzion.in/signIn",
+    canonical: "https://feedy.sethrachit.in/signIn",
   },
   openGraph: {
     title: "Sign In to Feedy",
     description:
       "Access your Feedy anonymous inbox. Read messages, manage your link, and control your anonymous messaging settings.",
-    url: "https://feedy.converzion.in/signIn",
+    url: "https://feedy.sethrachit.in/signIn",
     type: "website",
   },
   twitter: {

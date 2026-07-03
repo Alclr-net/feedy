@@ -10,6 +10,8 @@ import {
   MdOutlinePeople,
   MdOutlineVerifiedUser,
 } from "react-icons/md";
+import CaseStudy from "./caseStudy";
+import InteractiveTerminal from "./InteractiveTerminal";
 
 /* ══════════════════════════════════════════════════════════════
    SCROLL REVEAL HOOK
@@ -126,25 +128,6 @@ const stats = [
   { value: 0, display: "0", label: "Sender identities stored", numeric: true },
 ];
 
-const testimonials = [
-  {
-    handle: "@design_rachit",
-    text: "I got feedback I never would have heard otherwise. Feedy changed how I understand my audience.",
-  },
-  {
-    handle: "@priya_codes",
-    text: "Used it for a team retrospective. The honesty was refreshing. Zero awkwardness.",
-  },
-  {
-    handle: "@yusuf_creates",
-    text: "The AI suggestions are actually good. My friends say the messages feel so natural.",
-  },
-  {
-    handle: "@alex_secret",
-    text: "Simple, fast, private. Exactly what I wanted. No clutter, just the messages.",
-  },
-];
-
 const values = [
   {
     label: "Privacy first",
@@ -232,11 +215,11 @@ function StatCard({ stat, delay }: { stat: typeof stats[number]; delay: number }
     ? stat.value >= 1_000_000
       ? (count / 1_000_000).toFixed(count / 1_000_000 >= 1 ? 0 : 1) + "M+"
       : stat.value >= 1_000
-      ? (count / 1_000).toFixed(count / 1_000 >= 100 ? 0 : 0) + "K+"
-      : count.toString()
+        ? (count / 1_000).toFixed(count / 1_000 >= 100 ? 0 : 0) + "K+"
+        : count.toString()
     : inView
-    ? stat.display
-    : "—";
+      ? stat.display
+      : "—";
 
   return (
     <div
@@ -366,33 +349,8 @@ function AnimatedLine() {
 /* ── Testimonials ─────────────────────────────────────────── */
 export function TestimonialsSection() {
   return (
-    <section className="bg-background border-t border-border py-24 px-4">
-      <div className="max-w-6xl mx-auto">
-        <SectionHeading
-          eyebrow="Real people, real honesty"
-          title="What users are saying."
-          sub="Thousands of people are already sharing and receiving honest feedback with Feedy."
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-border">
-          {testimonials.map((t, i) => (
-            <FadeUp
-              key={i}
-              delay={i * 80}
-              className="bg-background p-6 flex flex-col gap-4 group hover:bg-muted/30 transition-colors duration-300 cursor-default"
-            >
-              <span className="text-3xl text-muted-foreground/60 font-serif leading-none select-none group-hover:text-muted-foreground transition-colors duration-300">
-                "
-              </span>
-              <p className="text-[11px] text-muted-foreground leading-relaxed font-mono flex-1 group-hover:text-foreground transition-colors duration-300">
-                {t.text}
-              </p>
-              <span className="text-[10px] text-muted-foreground/60 font-mono border-t border-border pt-3">
-                {t.handle}
-              </span>
-            </FadeUp>
-          ))}
-        </div>
-      </div>
+    <section className="bg-background border-t border-border py-24 ">
+      <CaseStudy />
     </section>
   );
 }
@@ -427,43 +385,9 @@ export function AboutSection() {
             </p>
           </FadeUp>
 
-          {/* Right: ASCII-style decorative terminal */}
-          <FadeUp
-            delay={120}
-            className="bg-card p-10 font-mono text-[11px] text-muted-foreground leading-loose select-none border border-border/50"
-          >
-            <div className="text-muted-foreground/80 mb-2 text-[10px] uppercase tracking-widest">
-              feedy — terminal
-            </div>
-            <div className="border-b border-border mb-4" />
-            <div>
-              <span className="text-green-600 font-bold">$</span> feedy init
-            </div>
-            <div className="text-muted-foreground/60"> creating your anonymous inbox…</div>
-            <div>
-              <span className="text-green-600 font-bold">✓</span> link ready: feedy.app/u/
-              <span className="text-foreground font-bold">you</span>
-            </div>
-            <div className="mt-3">
-              <span className="text-green-600 font-bold">$</span> feedy messages --unread
-            </div>
-            <div className="text-muted-foreground/60"> 3 new anonymous messages</div>
-            <div>
-              {" "}
-              <span className="text-muted-foreground/50">[1]</span> "Your talk last week genuinely…"
-            </div>
-            <div>
-              {" "}
-              <span className="text-muted-foreground/50">[2]</span> "Honest feedback: the design…"
-            </div>
-            <div>
-              {" "}
-              <span className="text-muted-foreground/50">[3]</span> "I never told you this but…"
-            </div>
-            <div className="mt-3">
-              <span className="text-green-600 font-bold">$</span>{" "}
-              <span className="animate-pulse text-muted-foreground">_</span>
-            </div>
+          {/* Right: Interactive developer terminal */}
+          <FadeUp delay={120} className="bg-neutral-950 h-[320px] md:h-[380px] w-full flex flex-col min-h-0">
+            <InteractiveTerminal />
           </FadeUp>
         </div>
 
@@ -513,13 +437,13 @@ export function CTASection() {
         }}
       >
         <div
-          className="p-3 border border-border bg-card"
+          className=" border border-border bg-card"
           style={{
             transform: inView ? "rotate(0deg) scale(1)" : "rotate(-10deg) scale(0.8)",
             transition: "transform 0.6s ease 0.2s",
           }}
         >
-          <img src="/feedy-favicons/favicon.svg" alt="Feedy Logo" className="w-7 h-7 rounded-md object-contain" />
+          <img src="/feedy-favicons/apple-touch-icon.png" alt="Feedy Logo" className="w-12 h-12 object-contain" />
         </div>
         <h2 className="text-3xl md:text-4xl font-bold uppercase text-foreground leading-tight font-mono">
           Ready to hear the truth?

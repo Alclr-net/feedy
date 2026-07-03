@@ -20,7 +20,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteUrl = "https://feedy.converzion.in";
+const siteUrl = "https://feedy.sethrachit.in";
 const siteTitle = "Feedy — Free Anonymous Messaging, Feedback & Question Platform";
 const siteDescription =
   "Feedy is the #1 free anonymous messaging app. Send & receive anonymous messages, anonymous feedback, anonymous questions, and anonymous confessions through your personal anonymous link. No sign-in required to send.";

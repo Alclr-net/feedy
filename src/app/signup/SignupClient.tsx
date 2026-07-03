@@ -24,8 +24,9 @@ function SignupPage() {
       email: emailRef.current?.value,
       password: passwordRef.current?.value,
     };
+    console.log("data", data)
     try {
-      const response = await axios.post("/api/auth/register", data);
+      const response = await axios.post("/api/signup", data);
       if (!response.data.success) {
         setLoading(false);
         usernameRef.current!.value = "";
@@ -39,7 +40,7 @@ function SignupPage() {
       usernameRef.current!.value = "";
       emailRef.current!.value = "";
       passwordRef.current!.value = "";
-      router.push("/signIn");
+      router.push("/verify");
     } catch (error: any) {
       setLoading(false);
       usernameRef.current!.value = "";

@@ -10,6 +10,7 @@ export async function POST(request: Request) {
   try {
     await dbConnect();
     const data = await request.json();
+    console.log("sign up data", data)
     const parsedData = AuthValidationSchema.safeParse(data);
     if (!parsedData.success) {
       const error = parsedData.error.issues[0].message;
@@ -19,9 +20,9 @@ export async function POST(request: Request) {
       )
     }
     const { username, email, password, avatar } = parsedData.data;
-    const IsUserNameExist = await searchByUserNameService(username!);
-
-    if (IsUserNameExist) {
+    const isUserNameExist = await searchByUserNameService(username!);
+    console.log("username exist", isUserNameExist)
+    if (isUserNameExist) {
       return Response.json({
         success: false,
         message: "Username already taken",

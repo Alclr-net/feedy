@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description:
     "Get in touch with the Feedy team. Reach us for support, bug reports, privacy inquiries, feature requests, or partnership opportunities.",
   alternates: {
-    canonical: "https://feedy.converzion.in/contact",
+    canonical: "https://feedy.sethrachit.in/contact",
   },
   openGraph: {
     title: "Contact Feedy — We're Here to Help",
     description:
       "Have a question or issue? Contact the Feedy team. We respond to all inquiries within 1–2 business days.",
-    url: "https://feedy.converzion.in/contact",
+    url: "https://feedy.sethrachit.in/contact",
     type: "website",
   },
   twitter: {

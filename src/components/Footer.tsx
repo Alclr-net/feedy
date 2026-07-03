@@ -1,28 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { FaGithub, FaDiscord, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { toast } from "sonner";
-import { cn } from "@/lib/className";
 
 export const Footer = () => {
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) return;
-
-    setLoading(true);
-    // Simulate API call for newsletter subscription
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setLoading(false);
-    toast.success("Thank you for subscribing to Feedy updates!");
-    setEmail("");
-  };
-
   const footerLinks = [
     {
       title: "Product",
@@ -61,7 +44,7 @@ export const Footer = () => {
           <div className="space-y-4">
             <Link href="/" className="inline-flex items-center gap-2 text-white group">
               <span className="text-2xl text-white transition-transform duration-300 group-hover:rotate-12">
-                <img src="/feedy-favicons/favicon.svg" alt="Feedy Logo" className="w-6 h-6 rounded-md object-contain inline-block" />
+                <img src="/feedy-favicons/favicon-192x192.png" alt="Feedy Logo" className="w-6 h-6 rounded-md object-contain inline-block" />
               </span>
 
             </Link>
@@ -74,7 +57,7 @@ export const Footer = () => {
           {/* Social Icons */}
           <div className="flex gap-4">
             <a
-              href="https://github.com"
+              href="https://github.com/Alclr-net"
               target="_blank"
               rel="noreferrer"
               aria-label="GitHub"
@@ -83,7 +66,7 @@ export const Footer = () => {
               <FaGithub size={18} />
             </a>
             <a
-              href="https://x.com"
+              href="https://x.com/seth_rachit_"
               target="_blank"
               rel="noreferrer"
               aria-label="Twitter"
@@ -92,7 +75,7 @@ export const Footer = () => {
               <FaXTwitter size={18} />
             </a>
             <a
-              href="https://discord.com"
+              href="https://discord.com/users/seth_rachit"
               target="_blank"
               rel="noreferrer"
               aria-label="Discord"
@@ -101,7 +84,7 @@ export const Footer = () => {
               <FaDiscord size={18} />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://linkedin.com/in/sethrachit"
               target="_blank"
               rel="noreferrer"
               aria-label="LinkedIn"
@@ -113,7 +96,7 @@ export const Footer = () => {
         </div>
 
         {/* Dynamic Navigation Links */}
-        <div className="col-span-1 md:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-4">
+        <div className="col-span-1 md:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-4">
           {footerLinks.map((section, idx) => (
             <div key={idx} className="space-y-4">
               <h3 className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">
@@ -133,38 +116,6 @@ export const Footer = () => {
               </ul>
             </div>
           ))}
-        </div>
-
-        {/* Newsletter Subscription */}
-        <div className="col-span-1 md:col-span-3 space-y-4">
-          <h3 className="text-xs uppercase tracking-widest text-neutral-500 font-semibold">
-            Stay Updated
-          </h3>
-          <p className="text-sm text-neutral-500 leading-relaxed">
-            Subscribe to our newsletter for features, design logs, and updates.
-          </p>
-          <form onSubmit={handleSubscribe} className="space-y-2">
-            <div className="relative">
-              <input
-                type="email"
-                placeholder="you@domain.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full bg-neutral-950 border border-neutral-900 rounded-lg px-4 py-2 text-sm text-white placeholder-neutral-600 focus:outline-none focus:border-neutral-700 focus:ring-1 focus:ring-neutral-700 transition"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={cn(
-                "w-full bg-white text-black font-semibold text-sm py-2  hover:bg-neutral-200 transition duration-200 cursor-pointer disabled:opacity-50",
-                loading && "cursor-not-allowed"
-              )}
-            >
-              {loading ? "Subscribing..." : "Subscribe"}
-            </button>
-          </form>
         </div>
       </div>
 

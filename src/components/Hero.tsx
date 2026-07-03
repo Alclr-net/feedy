@@ -137,7 +137,7 @@ export default function LaserFlowBox() {
                 <span className="w-2 h-2 rounded-full bg-green-500/80" />
               </div>
               <div className="bg-muted border border-border px-2 py-0.5 text-[10px] text-muted-foreground flex items-center gap-1 max-w-[180px] sm:max-w-xs w-full justify-center font-mono">
-                <img src="/feedy-favicons/favicon.svg" alt="Feedy" className="w-3 h-3 rounded-sm object-contain shrink-0" />
+                <img src="/feedy-favicons/favicon-32x32.png" alt="Feedy" className="w-3 h-3 rounded-sm object-contain shrink-0" />
                 <span className="truncate">feedy.app/u/alex_secret</span>
               </div>
               <div className="w-8" />

@@ -6,13 +6,13 @@ export const metadata: Metadata = {
   description:
     "Learn about Feedy's mission to enable honest, anonymous communication. Discover how our privacy-first architecture ensures complete anonymity for every anonymous message, feedback, and question.",
   alternates: {
-    canonical: "https://feedy.converzion.in/about",
+    canonical: "https://feedy.sethrachit.in/about",
   },
   openGraph: {
     title: "About Feedy — Anonymous Messaging Platform Built on Privacy",
     description:
       "Feedy is built on a zero-knowledge privacy architecture. Learn how we protect anonymous senders and why Feedy is the most trustworthy anonymous messaging app available.",
-    url: "https://feedy.converzion.in/about",
+    url: "https://feedy.sethrachit.in/about",
     type: "website",
   },
   twitter: {
