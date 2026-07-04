@@ -74,22 +74,20 @@ export const getUserById = async (id: string) => {
 export const createUserForOauthService = async ({
   username,
   email,
-  verifyCode,
-  provider,
-  codeExpiry
+  isVerified,
+  provider
 }: {
   username: string;
   email: string;
-  verifyCode: number;
+  isVerified: boolean;
   provider: string;
-  codeExpiry: Date
 }) => {
   try {
     const data = await UserModel.create({
       username,
       email,
       verifyCode,
-      codeExpiry,
+      isVerified,
       provider
     });
     return data;
