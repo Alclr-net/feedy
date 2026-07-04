@@ -162,7 +162,7 @@ function CaseStudyCard({
                             "  relative w-13 h-10 rounded-full border border-neutral-700 dark:border-neutral-400 overflow-hidden"
                         )}
                     >
-                        <Image alt="user" src={logo} fill className="object-cover" />
+                        <Image alt="user" src={logo} fill sizes="48px" className="object-cover" />
                     </div>
                     <div
                         className={cn(
